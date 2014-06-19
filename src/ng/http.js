@@ -557,6 +557,10 @@ function $HttpProvider() {
      *      for more information.
      *    - **responseType** - `{string}` - see
      *      [requestType](https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest#responseType).
+     *    - **xhrFields** - `{object}` - Object that will be passed directly to
+     *      [XMLHttpRequest()](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#XMLHttpRequest%28%29),
+     *      that can be used to set [non-standard properties](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#Non-standard_properties).
+     *      This object can also be set on the `$http.defaults` object to apply it globally.
      *
      * @returns {HttpPromise} Returns a {@link ng.$q promise} object with the
      *   standard `then` method and two http specific methods: `success` and `error`. The `then`
@@ -666,7 +670,8 @@ function $HttpProvider() {
       var config = {
         method: 'get',
         transformRequest: defaults.transformRequest,
-        transformResponse: defaults.transformResponse
+        transformResponse: defaults.transformResponse,
+        xhrFields: defaults.xhrFields,
       };
       var headers = mergeHeaders(requestConfig);
 
@@ -961,7 +966,7 @@ function $HttpProvider() {
         }
 
         $httpBackend(config.method, url, reqData, done, reqHeaders, config.timeout,
-            config.withCredentials, config.responseType);
+            config.withCredentials, config.responseType, config.xhrFields);
       }
 
       return promise;

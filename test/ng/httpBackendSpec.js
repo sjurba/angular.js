@@ -299,6 +299,22 @@ describe('$httpBackend', function() {
     expect(MockXhr.$$lastInstance.withCredentials).toBe(true);
   });
 
+  it('should pass xhrFields to createXhr', function() {
+    var createXhr = jasmine.createSpy('createXhr').andCallFake(createMockXhr);
+    $backend = createHttpBackend($browser, createXhr);
+    var xhrFields = {someField: 1};
+    $backend('GET', '/some.url', null, callback, {}, null, false, null, xhrFields);
+    expect(createXhr).toHaveBeenCalledWith('GET', xhrFields);
+  });
+
+  it('should pass xhrFields to XMLHttpRequest contructor', function(){
+    if (window.XMLHttpRequest) {
+      var xhrFields = {someField: 1};
+      var XMLHttpRequest = spyOn(window, 'XMLHttpRequest');
+      createXhr('GET', xhrFields);
+      expect(XMLHttpRequest).toHaveBeenCalledWith(xhrFields);
+    }
+  });
 
   describe('responseType', function() {
 
@@ -556,5 +572,5 @@ describe('$httpBackend', function() {
       expect(callback.mostRecentCall.args[0]).toBe(503);
     });
   });
-});
 
+});
