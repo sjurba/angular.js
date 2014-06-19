@@ -316,6 +316,14 @@ describe('$httpBackend', function() {
     }
   });
 
+  it('should not pass xhrFields to XMLHttpRequest contructor if undefined', function(){
+    if (window.XMLHttpRequest) {
+      var XMLHttpRequest = spyOn(window, 'XMLHttpRequest');
+      createXhr('GET', undefined);
+      expect(XMLHttpRequest).toHaveBeenCalledWith();
+    }
+  });
+
   describe('responseType', function() {
 
     it('should set responseType and return xhr.response', function() {

@@ -8,7 +8,11 @@ function createXhr(method, xhrFields) {
       !window.XMLHttpRequest)) {
       return new window.ActiveXObject("Microsoft.XMLHTTP");
     } else if (window.XMLHttpRequest) {
-      return new window.XMLHttpRequest(xhrFields);
+      if(isObject(xhrFields)){
+        return new window.XMLHttpRequest(xhrFields);
+      } else {
+        return new window.XMLHttpRequest();
+      }
     }
 
     throw minErr('$httpBackend')('noxhr', "This browser does not support XMLHttpRequest.");
